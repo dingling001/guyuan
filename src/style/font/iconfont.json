@@ -1,0 +1,30 @@
+{
+  "id": "1484099",
+  "name": "宁夏固原博物馆",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2124934",
+      "name": "喜欢",
+      "font_class": "xihuan",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "3846800",
+      "name": "进入",
+      "font_class": "jinru",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "5562992",
+      "name": "喜欢",
+      "font_class": "xihuan1",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    }
+  ]
+}
