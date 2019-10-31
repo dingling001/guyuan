@@ -2,9 +2,9 @@ import axios from "../api"; // 导入 api
 /**
  * 列表
  */
-export const ExhibitList = (language=1,skip,take) =>
+export const ExhibitList = (language = 1, skip, take) =>
     axios(
-        BaseUrl + "/api/exhibit_list", {
+        "/api/exhibit_list", {
             p: 'wx',
             language,
             skip,
@@ -13,13 +13,40 @@ export const ExhibitList = (language=1,skip,take) =>
         "GET",
         true
     );
-export const ExhibitInfo = (language=1,exhibit_id,api_token) =>
+export const ExhibitInfo = (language = 1, exhibit_id, api_token) =>
     axios(
-        BaseUrl + "/api/exhibit_info", {
+        "/api/exhibit_info", {
             p: 'wx',
             language,
             exhibit_id,
             api_token
+        },
+        "GET",
+        true
+    );
+export const ExhibitCateTj = (language = 1, exhibit_id, skip, take, is_getcounts) =>
+    axios(
+        "/api/exhibit_cate_tj", {
+            p: 'wx',
+            language,
+            exhibit_id,
+            skip,
+            take,
+            is_getcounts
+        },
+        "GET",
+        true
+    );
+// 点赞
+export const DoLike = (language = 1, exhibit_id, skip, take, is_getcounts) =>
+    axios(
+        "/api/do_like", {
+            p: 'wx',
+            language,
+            exhibit_id,
+            skip,
+            take,
+            is_getcounts
         },
         "GET",
         true

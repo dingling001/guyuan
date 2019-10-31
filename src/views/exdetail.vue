@@ -13,20 +13,22 @@
                 <div class="infoname">{{einfo.exhibit_name}}</div>
                 <div class="infotype">类型：<span v-for="(i,index) in einfo.cate_str" :key="index">{{i.name}}</span></div>
             </div>
-            <div class="infolike">
+            <div class="infolike" @click="like_fn">
                 <div :class="['iconfont', einfo.is_like==1?'iconxihuan':'iconxihuan1']"></div>
-                <div>{{einfo.like_num}}</div>
+                <div :class="{activetext:einfo.is_like==1}">{{einfo.like_num}}</div>
             </div>
         </div>
         <div class="hr"></div>
-        <div class="title"><span>展品介绍</span></div>
+        <div class="title"><span class="titles">展品介绍</span></div>
         <div class="ccontent" v-html="einfo.content"></div>
         <div class="hr"></div>
-        <div class="title"><span class="titles">相关展品</span><span class="more">更多 <span
+        <div class="title"><span class="titles">相关展品</span><span class="more" @click="gomore">更多 <span
                 class="iconfont iconjinru"></span></span>
         </div>
         <div class="othermore">
-            <div class="otheritem"><img src="" alt=""></div>
+            <div class="otheritem" v-for="item in tj_list " :key="item.exhibit_id" @click="changeInfo(item.exhibit_id)">
+                <img :src="item.exhibit_list_img" alt="">
+            </div>
         </div>
     </div>
 </template>
@@ -52,27 +54,58 @@
                     observeParents: true,
                     pagination: {el: ".swiper-pagination"}
                 },
-                exhibit_id: '',
+                exhibit_id: 1,
                 einfo: {
                     exhibit_imgs: []
-                }
+                },
+                tj_list: [],
+                skip: 0,
+                take: 4
             }
         },
         created() {
-            if (this.$route.query.exhibit_id) {
-                this.exhibit_id = this.$route.query.exhibit_id;
-                this._ExhibitInfo()
-            } else {
-                this.$router.replace('/')
-            }
+            this.exhibit_id = this.$route.query.exhibit_id || 1;
+            this._ExhibitInfo();
+            this._ExhibitCateTj();
         },
         methods: {
+            // 展品详情
             _ExhibitInfo() {
                 this.$api.ExhibitInfo(1, this.exhibit_id).then(res => {
                     if (res.status == 1) {
                         this.einfo = res.data;
                     }
                 })
+            },
+            // 获取相关展品
+            _ExhibitCateTj() {
+                this.$api.ExhibitCateTj(1, this.exhibit_id, this.skip, this.take, 0).then(res => {
+                    if (res.status == 1) {
+                        this.tj_list = res.data;
+                    }
+                })
+            },
+            // 更多
+            gomore() {
+                this.$router.push({path: '/home', query: {exhibit_id: this.exhibit_id}})
+            },
+            // 相关展品详情
+            changeInfo(id) {
+                this.$toast({
+                    type: 'loading',
+                    message: '加载中……'
+                })
+                this.exhibit_id = id;
+                this._ExhibitInfo();
+                this._ExhibitCateTj();
+            },
+            // 点赞
+            like_fn() {
+                if (this.einfo.is_like == 1) {
+                    this.einfo.is_like = 0
+                } else {
+                    this.einfo.is_like = 1
+                }
             }
         },
         //定义这个sweiper对象
@@ -150,6 +183,14 @@
                     font-size: 44px;
                     /*px*/
                     margin-bottom: 5px;
+
+                    &.iconxihuan {
+                        color: #FF7E00;
+                    }
+                }
+
+                .activetext {
+                    color: #FF7E00;
                 }
             }
         }
@@ -175,7 +216,7 @@
                 &.titles {
                     border-bottom: 2px solid #E6B204;
                     /*no*/
-                    padding: 15px 0;
+                    padding: 15px 0 8px 0;
                 }
 
                 &.more {
@@ -194,14 +235,24 @@
             /*px*/
             text-align: justify;
         }
-        .othermore{
+
+        .othermore {
             display: flex;
             align-items: center;
             padding: 15px;
-            .otheritem{
+
+            .otheritem {
                 width: 77px;
                 height: 77px;
-                img{
+                margin-right: 13px;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                img {
                     width: 100%;
                 }
             }
