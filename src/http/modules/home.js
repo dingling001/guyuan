@@ -38,15 +38,12 @@ export const ExhibitCateTj = (language = 1, exhibit_id, skip, take, is_getcounts
         true
     );
 // 点赞
-export const DoLike = (language = 1, exhibit_id, skip, take, is_getcounts) =>
+export const DoLike = (exhibit_id, type) =>
     axios(
-        "/api/do_like", {
+        "/api/zb_exhibit_visit_like", {
             p: 'wx',
-            language,
             exhibit_id,
-            skip,
-            take,
-            is_getcounts
+            type,
         },
         "GET",
         true

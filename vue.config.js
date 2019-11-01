@@ -59,7 +59,7 @@ module.exports = {
     //   .end();
   },
 
-  publicPath: process.env.BASE_URL,
+    publicPath:"././",
   configureWebpack: (config) => {
     if (isProduction) {
       // externals里的模块不打包 配置cdn

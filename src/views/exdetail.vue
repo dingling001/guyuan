@@ -1,21 +1,27 @@
 <template>
     <div class="dbox" v-wechat-title="einfo.exhibit_name">
-        <swiper :options="swiperOption" ref="mySwiper" class="imgs">
+        <swiper :options="swiperOption" ref="mySwiper" class="imgs" v-if="einfo.exhibit_imgs.length">
             <!-- 这部分放你要渲染的那些内容 -->
             <swiper-slide v-for="(item,index) in einfo.exhibit_imgs" :key="index">
-                <img :src="item">
+                <img :src="item" alt="">
             </swiper-slide>
             <!-- 这是轮播的小圆点 -->
             <div class="swiper-pagination" slot="pagination" v-show="einfo.exhibit_imgs.length>1"></div>
         </swiper>
         <div class="info">
-            <div>
+            <div class="infoleft">
                 <div class="infoname">{{einfo.exhibit_name}}</div>
                 <div class="infotype">类型：<span v-for="(i,index) in einfo.cate_str" :key="index">{{i.name}}</span></div>
             </div>
-            <div class="infolike" @click="like_fn">
-                <div :class="['iconfont', einfo.is_like==1?'iconxihuan':'iconxihuan1']"></div>
-                <div :class="{activetext:einfo.is_like==1}">{{einfo.like_num}}</div>
+            <div>
+                <div class="infolike">
+                    <div class="iconfont iconliulanliang"></div>
+                    <div>{{einfo.look_num||0}}</div>
+                </div>
+                <div class="infolike" @click="like_fn">
+                    <div :class="['iconfont', einfo.is_like==1?'iconxihuan':'iconxihuan1']"></div>
+                    <div :class="{activetext:einfo.is_like==1}">{{einfo.like_num||0}}</div>
+                </div>
             </div>
         </div>
         <div class="hr"></div>
@@ -49,7 +55,7 @@
                     //是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
                     notNextTick: true,
                     paginationClickable: true,
-                    loop: true,
+                    // loop: true,
                     observe: true,
                     observeParents: true,
                     pagination: {el: ".swiper-pagination"}
@@ -60,11 +66,12 @@
                 },
                 tj_list: [],
                 skip: 0,
-                take: 4
+                take: 4,
+                like_status: true
             }
         },
         created() {
-            this.exhibit_id = this.$route.query.exhibit_id || 1;
+            this.exhibit_id = this.$route.query.exhibit_id || 14;
             this._ExhibitInfo();
             this._ExhibitCateTj();
         },
@@ -74,6 +81,7 @@
                 this.$api.ExhibitInfo(1, this.exhibit_id).then(res => {
                     if (res.status == 1) {
                         this.einfo = res.data;
+                        this.see_fn();
                     }
                 })
             },
@@ -93,20 +101,33 @@
             changeInfo(id) {
                 this.$toast({
                     type: 'loading',
-                    message: '加载中……'
+                    message: '加载中…'
                 })
                 this.exhibit_id = id;
+                this.like_status = true;
                 this._ExhibitInfo();
                 this._ExhibitCateTj();
+                window.scrollTo(0, 0)
             },
             // 点赞
             like_fn() {
-                if (this.einfo.is_like == 1) {
-                    this.einfo.is_like = 0
-                } else {
-                    this.einfo.is_like = 1
+                if (this.einfo.is_like == 0 && this.like_status) {
+                    this.einfo.is_like = 1;
+                    this.einfo.like_num += 1;
+                    this.$api.DoLike(this.exhibit_id, 2).then(res => {
+                        this.like_status = false
+                    })
                 }
-            }
+            },
+            // 浏览量
+            see_fn() {
+                if (this.einfo.is_like == 0) {
+                }
+                this.$api.DoLike(this.exhibit_id, 1).then(res => {
+                    if (res.status == 1) {
+                    }
+                })
+            },
         },
         //定义这个sweiper对象
         computed: {
@@ -135,18 +156,18 @@
                 background-color: #fff;
                 transition: ease-in-out .3s;
                 opacity: 1;
-                width: 12px;
-                /*px*/
-                height: 12px;
-                /*px*/
+                width: 6px;
+                /*no*/
+                height: 6px;
+                /*no*/
                 &.swiper-pagination-bullet-active {
-                    width: 36px;
-                    /*px*/
-                    height: 12px;
-                    /*px*/
+                    width: 18px;
+                    /*no*/
+                    height: 6px;
+                    /*no*/
                     background: rgba(255, 255, 255, 1);
-                    border-radius: 6px;
-                    /*px*/
+                    border-radius: 3px;
+                    /*no*/
                     opacity: 1;
                 }
             }
@@ -158,34 +179,55 @@
             border-bottom: 1px solid #EEEEEE;
             /*no*/
             display: flex;
-            align-items: center;
+            /*align-items: center;*/
             justify-content: space-between;
 
-            .infoname {
-                font-size: 36px;
-                /*px*/
-                padding-bottom: 12px;
-            }
+            .infoleft {
+                max-width: 240px;
+                flex-shrink: 0;
+                margin-right: 10px;
 
-            .infotype {
-                color: #757575;
-                font-size: 28px;
-                /*px*/
-                span {
-                    margin-right: 10px;
+                .infoname {
+                    font-size: 18px;
+                    padding-bottom: 12px;
                 }
+
+                .infotype {
+                    color: #757575;
+                    font-size: 14px;
+
+                    span {
+                        margin-right: 10px;
+                        line-height: 20px;
+                    }
+                }
+
             }
 
             .infolike {
                 text-align: center;
+                display: inline-block;
+
+                &:last-child {
+                    margin-left: 30px;
+                }
 
                 .iconfont {
-                    font-size: 44px;
-                    /*px*/
+                    font-size: 22px;
                     margin-bottom: 5px;
+                    transition: ease-in-out .1s;
+                    width: 22px;
+                    height: 22px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     &.iconxihuan {
                         color: #FF7E00;
+                    }
+
+                    &.iconliulanliang {
+                        font-size: 17px;
                     }
                 }
 
@@ -211,8 +253,8 @@
 
             span {
                 display: inline-block;
-                font-size: 32px;
-                /* px*/
+                font-size: 16px;
+
                 &.titles {
                     border-bottom: 2px solid #E6B204;
                     /*no*/
@@ -221,8 +263,7 @@
 
                 &.more {
                     color: #646464;
-                    font-size: 26px;
-                    /*px*/
+                    font-size: 13px;
                 }
             }
         }
@@ -231,8 +272,7 @@
             padding: 15px;
             line-height: 24px;
             color: #323232;
-            font-size: 30px;
-            /*px*/
+            font-size: 15px;
             text-align: justify;
         }
 

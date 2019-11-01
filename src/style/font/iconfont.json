@@ -25,6 +25,13 @@
       "font_class": "xihuan1",
       "unicode": "e63d",
       "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "8426485",
+      "name": "浏览量 (1)",
+      "font_class": "liulanliang",
+      "unicode": "e691",
+      "unicode_decimal": 59025
     }
   ]
 }

@@ -140,10 +140,8 @@
                 text-align: center;
                 line-height: 36px;
                 color: #323232;
-                font-size: 30px;
-                /*px*/
+                font-size: 15px;
             }
         }
-
     }
 </style>
