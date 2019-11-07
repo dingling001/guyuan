@@ -1,7 +1,7 @@
 /**
  * 默认配置
  */
-var BaseUrl = 'http://47.93.76.140:20013'
+var BaseUrl = 'http://guyuan.museum-edu.cn'
 export default {
     // 基础url前缀
     baseURL: BaseUrl,
