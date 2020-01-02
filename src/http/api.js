@@ -3,7 +3,6 @@ import qs from 'qs'; // 序列化请求数据，视服务端的要求
 import config from './config.js';
 // 导入入默认配置
 let cancel;
-const promiseArr = {};
 const { CancelToken } = axios;
 // 配置全局取消数组
 window.__axiosPromiseArr = [];
@@ -79,7 +78,7 @@ export default function (url = '', data = {}, type = 'GET', isRepeat = true) {
     }),
   };
   type = type.toUpperCase();
-  return new Promise(((resolve, reject) => {
+  return new Promise(((resolve) => {
     if (type === 'GET') {
       options = Object.assign(options, {
         method: 'get',
@@ -102,7 +101,7 @@ export default function (url = '', data = {}, type = 'GET', isRepeat = true) {
         return false;
       })
       .catch((err) => {
-        console.log('网络异常');
+        console.log(err,'网络异常');
       });
   }));
 }

@@ -3,19 +3,38 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="./favicon.ico">
-    <title>宁夏固原博物馆</title>
-    <style>
-        .van-toast{
-            padding: 0!important;
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <title>讲解服务评价</title>
+<!--    <script src="/public/static/baseURL.js" type="text/javascript"></script>-->
+
+    <script>
+        var STATIC_GUIDE_URL = "https://guide.hymuseum.org.cn";
+        // console.log(STATIC_GUIDE_URL)
+    </script>
+    <style type="text/css">
+        .van-toast {
+            /*padding: 0 !important;*/
+            width: 224px !important;
+            background-color: rgba(0, 0, 0, .5) !important;
+        }
+
+        .van-dialog {
+            border-radius: 5px !important;
+        }
+
+        .van-dialog .van-button {
+            font-size: 16px;
+        }
+
+        .van-dialog__confirm, .van-dialog__confirm:active {
+            color: #B27828 !important;
         }
     </style>
 </head>
 <body>
 <noscript>
-    <strong>We're sorry but guyuan doesn't work properly without JavaScript enabled. Please enable it to
-        continue.</strong>
+    <strong></strong>
 </noscript>
 <div id="app"></div>
 <!-- built files will be auto injected -->

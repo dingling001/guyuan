@@ -1,27 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Exdetail from '../views/exdetail.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path:'/',
-        redirect: '/exdetail'
+        redirect: '/index'
     },
     {
-        path: '/exdetail',
-        name: 'exdetail',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component:Exdetail
+        path: '/index',
+        name: 'msg',
+        meta:{
+          title:'讲解服务评价'
+        },
+        component: () => import(/* webpackChunkName: "about" */ '../views/index')
     },
     {
         path: '/home',
         name: 'home',
+        meta:{
+            title:'讲解服务评价'
+        },
         component: () => import(/* webpackChunkName: "about" */ '../views/Home')
     },
+
 ];
 
 const router = new VueRouter({

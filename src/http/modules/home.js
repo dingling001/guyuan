@@ -1,50 +1,48 @@
 import axios from "../api"; // 导入 api
 /**
- * 列表
+ * 详情
  */
-export const ExhibitList = (language = 1, skip, take) =>
+export const GOrderIdFeedback = (gorder_id) =>
     axios(
-        "/api/exhibit_list", {
-            p: 'wx',
-            language,
-            skip,
-            take
+        "/api/feedback/gorder_id_feedback", {
+            p: 't',
+            gorder_id,
         },
         "GET",
         true
     );
-export const ExhibitInfo = (language = 1, exhibit_id, api_token) =>
+export const OrderIdFeedback = (order_id) =>
     axios(
-        "/api/exhibit_info", {
+        "/api/feedback/order_id_feedback", {
             p: 'wx',
-            language,
-            exhibit_id,
-            api_token
+            order_id,
         },
         "GET",
         true
     );
-export const ExhibitCateTj = (language = 1, exhibit_id, skip, take, is_getcounts) =>
+export const FeedbackList = () =>
     axios(
-        "/api/exhibit_cate_tj", {
+        "/api/feedback/list", {
             p: 'wx',
-            language,
-            exhibit_id,
-            skip,
-            take,
-            is_getcounts
         },
         "GET",
         true
     );
-// 点赞
-export const DoLike = (exhibit_id, type) =>
+/*
+* order_id     团体票订单id
+* gorder_id    团体预约订单id
+* taskid       任务id
+* guideid      讲解员id
+* star_num      星级
+* label_ids     标签id，逗号分隔
+* remark_text   评价备注
+*/
+export const FeedbackSubmit = (data) =>
     axios(
-        "/api/zb_exhibit_visit_like", {
-            p: 'wx',
-            exhibit_id,
-            type,
+         '/api/feedback/submit', {
+            p: 't',
+            ...data
         },
-        "GET",
+        'POST',
         true
     );

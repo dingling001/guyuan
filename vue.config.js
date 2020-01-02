@@ -1,4 +1,3 @@
-const postcssPx2Rem = require('postcss-px2rem');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -14,7 +13,7 @@ const cdn = {
 };
 
 module.exports = {
-    lintOnSave: true,
+    lintOnSave: false,
 
     // css: {
     //   loaderOptions: {
